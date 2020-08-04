@@ -10,7 +10,7 @@ jobs:
       Configuration: Release
       SlnFile: .\Nustache.sln
     
-    runs-on: windows-lastest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout
