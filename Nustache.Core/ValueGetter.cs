@@ -126,6 +126,7 @@ namespace Nustache.Core
     {
         private readonly XmlNodeList _target;
         private readonly int _index;
+        private object _foundSingleValue;
 
         public XmlNodeListIndexGetter(XmlNodeList target, int index)
         {

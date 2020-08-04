@@ -28,17 +28,13 @@ jobs:
     - name: Setup GitHub NuGet Registry (GPR)
       run: nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/genexuslabs/index.json" -UserName %GITHUB_ACTOR% -Password ${{ secrets.GITHUB_TOKEN }} 
 
-    - name: Restore packages
-      run: |
-        dotnet restore $Env:SlnFile
-
     - name: Build
       run: |
-        dotnet build $Env:SlnFile --no-restore --configuration $Env:Configuration /p:GeneratePackageOnBuild=false
+        msbuild $Env:SlnFile /m /verbosity:minimal /p:GeneratePackageOnBuild=false
 
     - name: Pack
       run: |
-        dotnet pack .\Nustache.Core\Nustache.Core.csproj --no-restore --no-build --configuration $Env:Configuration /p:Platform=AnyCPU
+        nuget pack .\Nustache.Core\Nustache.Core.csproj --no-restore --no-build --configuration $Env:Configuration /p:Platform=AnyCPU
 
     - name: Test
       run: |
