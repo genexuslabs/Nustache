@@ -1,0 +1,48 @@
+name: Build
+on: 
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    env:
+      Configuration: Release
+      SlnFile: .\Nustache.sln
+    
+    runs-on: windows-lastest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.1
+      with:
+        submodules: 'recursive'
+
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+
+    - name: Setup GitHub NuGet Registry (GPR)
+      run: nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/genexuslabs/index.json" -UserName %GITHUB_ACTOR% -Password ${{ secrets.GITHUB_TOKEN }} 
+
+    - name: Restore packages
+      run: |
+        dotnet restore $Env:SlnFile
+
+    - name: Build
+      run: |
+        dotnet build $Env:SlnFile --no-restore --configuration $Env:Configuration /p:GeneratePackageOnBuild=false
+
+    - name: Pack
+      run: |
+        dotnet pack .\Nustache.Core\Nustache.Core.csproj --no-restore --no-build --configuration $Env:Configuration /p:Platform=AnyCPU
+
+  - name: Test
+      run: |
+        nunit-console ".\Nustache.Compilation.Tests\bin\Release\Nustache.Compilation.Tests.dll" ".\Nustache.Core.Tests\bin\Release\Nustache.Core.Tests.dll"
+
+    - name: Publish packages
+      run: |      
+        Get-ChildItem .\dotnet\*.nupkg -Recurse |
+          ForEach-Object {
+            dotnet nuget push $_.FullName --source GPR
+        }
