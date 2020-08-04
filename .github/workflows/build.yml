@@ -36,7 +36,7 @@ jobs:
       run: |
         dotnet pack .\Nustache.Core\Nustache.Core.csproj --no-restore --no-build --configuration $Env:Configuration /p:Platform=AnyCPU
 
-  - name: Test
+    - name: Test
       run: |
         nunit-console ".\Nustache.Compilation.Tests\bin\Release\Nustache.Compilation.Tests.dll" ".\Nustache.Core.Tests\bin\Release\Nustache.Core.Tests.dll"
 
