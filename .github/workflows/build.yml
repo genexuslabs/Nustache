@@ -13,6 +13,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Git config
+      run: |
+        git config --global http.postBuffer 524288000
+
     - name: Checkout
       uses: actions/checkout@v2.3.1
       with:
