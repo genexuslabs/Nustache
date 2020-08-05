@@ -5,8 +5,8 @@
     <version>$version$</version>
     <authors>Jason Diamond</authors>
     <owners>Jason Diamond</owners>
-    <licenseUrl>https://raw.github.com/jdiamond/Nustache/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://github.com/jdiamond/Nustache</projectUrl>
+    <license type="expression">MIT</license>
+    <repository type="git" url="https://github.com/genexuslabs/Nustache.git" />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <tags>Template Mustache</tags>

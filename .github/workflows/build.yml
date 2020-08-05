@@ -42,7 +42,7 @@ jobs:
 
     - name: Build
       run: |
-        msbuild $Env:SlnFile /m /verbosity:minimal /p:GeneratePackageOnBuild=false
+        msbuild $Env:SlnFile /m /verbosity:minimal "/p:Configuration=$Env:Configuration;GeneratePackageOnBuild=false"
 
     - name: Pack
       run: |
@@ -53,9 +53,8 @@ jobs:
     #    .\packages\NUnit.ConsoleRunner.3.2.0\tools\nunit3-console.exe ".\Nustache.Compilation.Tests\bin\Release\Nustache.Compilation.Tests.dll" ".\Nustache.Core.Tests\bin\Release\Nustache.Core.Tests.dll"
     
     - name: Publish packages
-      if: github.repository_owner == 'GeneXusLabs' && github.ref == 'master'
+      if: github.repository_owner == 'GeneXusLabs' && github.ref == 'refs/heads/master'
       run: |      
-        Get-ChildItem .\dotnet\*.nupkg -Recurse |
-          ForEach-Object {
-           nuget push $_.FullName --source GPR
+        Get-ChildItem .\*.nupkg | ForEach-Object {
+           nuget push $_.FullName -Source GPR
         }
